@@ -1,0 +1,79 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "D.O.N.N.Y. starten",
+			"type": "npm",
+			"script": "start",
+			"problemMatcher": []
+		},
+		{
+			"label": "Windows-Installer bauen",
+			"type": "npm",
+			"script": "dist:win",
+			"problemMatcher": []
+		},
+		{
+			"label": "Portable Windows-App bauen",
+			"type": "npm",
+			"script": "dist:win:dir",
+			"problemMatcher": []
+		},
+		{
+			"label": "Validate DONNY task and script configuration",
+			"type": "shell",
+			"command": "sh",
+			"args": [
+				"-lc",
+				"node --check electron/main.js && node --check electron/preload.js && node --check public/app.js && npm pkg get scripts.dist:win:dir && node -e \"JSON.parse(require('fs').readFileSync('.vscode/tasks.json'))\""
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Validate task JSON and DONNY sources",
+			"type": "shell",
+			"command": "sh",
+			"args": [
+				"-lc",
+				"python3 -m json.tool .vscode/tasks.json >/dev/null && node --check electron/main.js && node --check electron/preload.js && node --check public/app.js && npm pkg get scripts.dist:win:dir && echo 'Task JSON und JavaScript: OK'"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Build final portable Windows app",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"run",
+				"dist:win:dir"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Refresh final Windows portable archive",
+			"type": "shell",
+			"command": "zip",
+			"args": [
+				"-qru",
+				"dist/DONNY-Windows-portable.zip",
+				"dist/win-unpacked"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Verify final portable archive",
+			"type": "shell",
+			"command": "unzip",
+			"args": [
+				"-tq",
+				"dist/DONNY-Windows-portable.zip"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		}
+	]
+}
