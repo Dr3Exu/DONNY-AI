@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#101513" />
+    <title>D.O.N.N.Y. | Persönlicher Assistent</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'" />
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./app.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Hauptnavigation">
+        <a class="brand" href="/" aria-label="D.O.N.N.Y. Startseite">
+          <span class="brand-mark" aria-hidden="true"><span></span></span>
+          <span>D.O.N.N.Y.<small>PERSONAL SYSTEM</small></span>
+        </a>
+        <div class="nav-caption">ARBEITSBEREICH</div>
+        <a class="nav-item active" href="#assistant-section"><span class="nav-icon">◉</span> Assistent <span class="nav-current"></span></a>
+        <a class="nav-item" href="#programs-panel"><span class="nav-icon">▣</span> Programme</a>
+        <a class="nav-item" href="#appointments-panel"><span class="nav-icon">□</span> Termine</a>
+        <a class="nav-item" href="#web-panel"><span class="nav-icon">⌕</span> Websuche</a>
+        <div class="sidebar-bottom">
+          <div class="connection-card">
+            <span class="connection-dot" id="connection-dot"></span>
+            <div><strong id="connection-title">System wird geprüft</strong><small id="connection-detail">Einen Moment bitte</small></div>
+          </div>
+          <div class="profile"><div class="profile-avatar">D</div><div><strong>Dein D.O.N.N.Y.</strong><small>Lokaler Assistent</small></div><span class="profile-menu" aria-hidden="true">···</span></div>
+        </div>
+      </aside>
+
+      <main class="main-panel">
+        <header class="topbar">
+          <div class="breadcrumb"><span>Arbeitsbereich</span><span class="crumb-separator">/</span><strong>Assistent</strong></div>
+          <div class="topbar-right"><button class="key-button" id="api-key-open" type="button" title="API-Schlüssel verwalten">Schlüssel</button><span class="secure-label"><span class="secure-dot"></span><span id="privacy-label">LOKALER MODUS</span></span><span class="topbar-divider"></span><time id="header-clock">--:--</time></div>
+        </header>
+
+        <section class="workspace" aria-label="D.O.N.N.Y. Assistent">
+          <div class="conversation-column">
+            <div class="intro-row">
+              <div><div class="eyebrow"><span class="eyebrow-line"></span> DEIN PERSÖNLICHER ASSISTENT</div><h1>Dein Alltag. <span>Unter Kontrolle.</span></h1><p class="intro-copy">Programme, Termine und Websuche an einem Ort.</p></div>
+              <div class="assistant-visual" aria-hidden="true"><div class="visual-ring ring-one"></div><div class="visual-ring ring-two"></div><div class="visual-core"><span></span></div><i class="visual-spark spark-one"></i><i class="visual-spark spark-two"></i></div>
+            </div>
+
+            <section class="tools-grid" aria-label="Assistentenwerkzeuge">
+              <section class="tool-panel programs-panel" id="programs-panel" aria-labelledby="programs-heading">
+                <div class="tool-heading"><div><span class="tool-index">01</span><h2 id="programs-heading">Programme</h2></div><span class="tool-hint">WINDOWS</span></div>
+                <p class="tool-copy" id="programs-status">Freigegebene Programme öffnen oder schließen.</p>
+                <div class="program-list" id="program-list"></div>
+              </section>
+
+              <section class="tool-panel appointments-panel" id="appointments-panel" aria-labelledby="appointments-heading">
+                <div class="tool-heading"><div><span class="tool-index">02</span><h2 id="appointments-heading">Termine</h2></div><span class="tool-hint">LOKAL</span></div>
+                <form class="appointment-form" id="appointment-form">
+                  <input id="appointment-id" type="hidden" />
+                  <label><span>TITEL</span><input id="appointment-title" maxlength="120" placeholder="Zum Beispiel: Zahnarzt" required /></label>
+                  <label><span>DATUM &amp; UHRZEIT</span><input id="appointment-time" type="datetime-local" required /></label>
+                  <label><span>NOTIZ (OPTIONAL)</span><input id="appointment-notes" maxlength="2000" placeholder="Ort oder Details" /></label>
+                  <div class="appointment-actions"><button class="tool-submit" type="submit" id="appointment-submit">Termin speichern</button><button class="text-button" type="button" id="appointment-cancel" hidden>Abbrechen</button></div>
+                </form>
+                <div class="appointment-list" id="appointment-list" aria-live="polite"></div>
+              </section>
+
+              <section class="tool-panel web-panel" id="web-panel" aria-labelledby="web-heading">
+                <div class="tool-heading"><div><span class="tool-index">03</span><h2 id="web-heading">Internet</h2></div><span class="tool-hint">STANDARD-BROWSER</span></div>
+                <p class="tool-copy">Suche starten oder eine Webadresse öffnen. D.O.N.N.Y. fragt vorher nach.</p>
+                <form class="web-form" id="web-search-form">
+                  <label for="web-search-input">WEB-SUCHE</label>
+                  <div class="inline-control"><input id="web-search-input" placeholder="Wonach soll ich suchen?" maxlength="300" required /><button class="tool-submit" type="submit" aria-label="Websuche starten">Suchen</button></div>
+                </form>
+                <form class="web-form" id="web-open-form">
+                  <label for="web-url-input">WEBSEITE ÖFFNEN</label>
+                  <div class="inline-control"><input id="web-url-input" type="url" placeholder="https://example.com" required /><button class="tool-submit secondary-submit" type="submit" aria-label="Webseite öffnen">Öffnen</button></div>
+                </form>
+              </section>
+            </section>
+
+            <section id="assistant-section" class="chat-panel" aria-label="Gespräch mit D.O.N.N.Y.">
+              <div class="chat-heading"><div><span class="chat-heading-mark"></span><strong>Gespräch</strong><span class="live-label">LIVE</span></div><button class="clear-button" id="clear-chat" type="button" title="Gespräch leeren" aria-label="Gespräch leeren">↻</button></div>
+              <div class="messages" id="messages" aria-live="polite" aria-label="Nachrichtenverlauf"></div>
+              <div class="suggestions" id="suggestions">
+                <span class="suggestion-label">ZUM LOSLEGEN</span>
+                <button type="button" data-prompt="Was kannst du für mich tun?">Was kannst du?</button>
+                <button type="button" data-prompt="Wie spät ist es?">Uhrzeit</button>
+                <button type="button" data-prompt="Gib mir einen kurzen Tipp für einen guten Tag.">Tagesimpuls</button>
+              </div>
+              <form class="composer" id="chat-form">
+                <label class="sr-only" for="message-input">Nachricht an D.O.N.N.Y.</label>
+                <textarea id="message-input" rows="1" placeholder="Schreib eine Nachricht …" maxlength="2000"></textarea>
+                <div class="composer-actions"><span class="composer-hint">ENTER ZUM SENDEN <span>·</span> SHIFT + ENTER FÜR ZEILENUMBRUCH</span><div class="action-buttons"><button class="icon-button mic-button" id="mic-button" type="button" title="Spracheingabe" aria-label="Spracheingabe">⌁</button><button class="send-button" type="submit" title="Nachricht senden" aria-label="Nachricht senden">↑</button></div></div>
+              </form>
+              <div class="privacy-note"><span class="lock-icon" aria-hidden="true">◆</span> Ohne KI bleibt alles lokal. Mit KI gehen Nachrichten an den API-Anbieter.</div>
+            </div>
+            <footer class="workspace-footer"><span>D.O.N.N.Y. <span class="footer-dot">·</span> BETA 0.1</span><span>GEMACHT FÜR DEINEN ALLTAG</span></footer>
+          </div>
+        </section>
+      </main>
+    </div>
+    <dialog class="key-dialog" id="api-key-dialog" aria-labelledby="key-dialog-title">
+      <form class="key-dialog-content" id="api-key-form">
+        <div class="tool-heading"><div><span class="tool-index">EINSTELLUNG</span><h2 id="key-dialog-title">KI verbinden</h2></div><button class="clear-button" id="api-key-close" type="button" aria-label="Schließen">×</button></div>
+        <p class="tool-copy">Der Schlüssel wird im Windows-Schlüsselspeicher verschlüsselt. Chatnachrichten werden an den API-Anbieter gesendet.</p>
+        <label class="key-label" for="api-key-input">API-SCHLÜSSEL</label>
+        <input id="api-key-input" type="password" autocomplete="new-password" spellcheck="false" placeholder="Neuen Schlüssel eingeben" />
+        <div class="dialog-actions"><button class="tool-submit" type="submit">Verschlüsselt speichern</button><button class="text-button" id="api-key-clear" type="button">Schlüssel entfernen</button></div>
+        <p class="dialog-status" id="key-dialog-status" aria-live="polite"></p>
+      </form>
+    </dialog>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>

@@ -1,0 +1,45 @@
+{
+  "name": "donny-ai",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Persönlicher Windows-Desktop-Assistent D.O.N.N.Y.",
+  "main": "electron/main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron .",
+    "dist:win": "electron-builder --win nsis",
+    "dist:win:dir": "electron-builder --win --dir"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "electron": "^40.0.0",
+    "electron-builder": "^26.0.0"
+  },
+  "build": {
+    "appId": "de.donny.assistant",
+    "productName": "D.O.N.N.Y.",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "electron/**/*",
+      "public/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": "nsis"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  },
+  "allowScripts": {
+    "electron@40.10.6": true,
+    "electron-winstaller@5.4.0": true
+  }
+}
